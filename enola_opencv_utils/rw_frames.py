@@ -23,6 +23,10 @@ class VideoCapture:
     def is_opened(self):
         return self.cap.isOpened()
 
+    def release(self):
+        if self.cap:
+            self.cap.release()
+
     def get(self, key):
         return self.cap.get(key)
 
