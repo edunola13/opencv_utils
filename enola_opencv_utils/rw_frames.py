@@ -11,11 +11,13 @@ from threading import Thread
 
 class VideoCapture:
 
-    def __init__(self, path=0):
+    def __init__(self, path=0, settings=[]):
         self.path = path
         self.cap = cv2.VideoCapture(self.path)
         if not self.cap.isOpened():
             self.cap.open(self.path)
+        for setting in settings:
+            self.cap.set(setting[0], setting[1])
 
     def read(self):
         return self.cap.read()
@@ -74,8 +76,8 @@ class VideoCaptureThread(VideoCapture):
     # Despues los otros hilos leen de lo que va guardando
     #
 
-    def __init__(self, path, max_queue=50, name="WebcamVideoStream"):
-        super().__init__(path)
+    def __init__(self, path, max_queue=50, settings=[], name="WebcamVideoStream"):
+        super().__init__(path, settings)
         (self.grabbed, self.frame) = self.cap.read()
 
         # initialize the thread name
